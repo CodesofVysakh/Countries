@@ -28,24 +28,20 @@ function Countries() {
     const [countries, setCountries] = useState([]);
     const [isLoading, setIsLoading] = useState(true);
 
-    useEffect(async () => {
-        try{
-            await fetch("https://restcountries.com/v3.1/all")
-                .then((res) => res.json())
-                .then((data) => {
-                    setCountries(data);
-                    setIsLoading(false);
-                })
-                .catch((err) => {
-                    console.error(err);
-                    setIsLoading(false);
-                });
-        }
-        catch{
-            // setCountries([])
-                console.error("Internal Server Error");
+    useEffect(() => {
+        async function fetchData() {
+            try {
+                const res = await fetch("https://restcountries.com/v3.1/all");
+                const data = await res.json();
+                setCountries(data);
+            } catch (err) {
+                console.error(err);
+            } finally {
                 setIsLoading(false);
+            }
         }
+
+        fetchData();
     }, []);
 
     return (
